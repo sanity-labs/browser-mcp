@@ -12,6 +12,50 @@ npx agentibility
 
 The MCP server starts and exposes tools for web browsing. Connect your agent via MCP, then:
 
+## Installation
+
+### Claude Desktop
+
+Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "agentibility": {
+      "command": "npx",
+      "args": ["github:simen/agentibility"]
+    }
+  }
+}
+```
+
+Restart Claude Desktop. The browsing tools will appear automatically.
+
+### Claude Code
+
+Add to your project's `.claude/config.json` or run:
+
+```bash
+claude mcp add agentibility "npx github:simen/agentibility"
+```
+
+### Visible Browser (Debug Mode)
+
+To see what the agent is doing, run with a visible browser window:
+
+```json
+{
+  "mcpServers": {
+    "agentibility": {
+      "command": "npx",
+      "args": ["github:simen/agentibility", "--no-headless"]
+    }
+  }
+}
+```
+
+The browser will open visibly so you can watch the agent navigate.
+
 ```javascript
 // Open a browser session
 await mcp.call('open_session', { session: 'main', url: 'https://example.com' });
