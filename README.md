@@ -4,14 +4,6 @@ Accessibility for agents. Browse the web using semantic accessibility patterns�
 
 Agentibility is an MCP server that lets AI agents navigate and interact with web pages using the same accessibility semantics that screen readers use. Instead of parsing raw HTML or analyzing screenshots, agents query landmarks, headings, forms, and other semantic elements.
 
-## Quick Start
-
-```bash
-npx agentibility
-```
-
-The MCP server starts and exposes tools for web browsing. Connect your agent via MCP, then:
-
 ## Installation
 
 ### Claude Desktop
@@ -55,26 +47,6 @@ To see what the agent is doing, run with a visible browser window:
 ```
 
 The browser will open visibly so you can watch the agent navigate.
-
-```javascript
-// Open a browser session
-await mcp.call('open_session', { session: 'main', url: 'https://example.com' });
-
-// Get page overview
-await mcp.call('overview', { session: 'main' });
-// → { title, url, landmarks: [...], counts: { headings: 5, links: 12, forms: 1, ... } }
-
-// Query specific elements
-await mcp.call('elements', { session: 'main', type: 'forms' });
-// → { elements: [{ action: '/search', fields: [...] }], count: 1 }
-
-// Interact
-await mcp.call('action', { session: 'main', type: 'fill', selector: '#search', value: 'query' });
-await mcp.call('action', { session: 'main', type: 'click', selector: '#submit' });
-
-// Close when done
-await mcp.call('close_session', { session: 'main' });
-```
 
 ## Available Tools
 
