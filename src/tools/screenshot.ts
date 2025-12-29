@@ -2,6 +2,7 @@
  * screenshot tool - Capture page screenshot
  */
 
+import { writeFileSync } from 'fs';
 import { getSession, listSessions } from '../session.js';
 
 export const schema = {
@@ -22,6 +23,10 @@ export const schema = {
         type: 'boolean',
         description: 'Capture full scrollable page instead of viewport only. Ignored if selector is provided. Default: false',
       },
+      savePath: {
+        type: 'string',
+        description: 'If provided, saves the PNG to this file path and returns the path instead of base64 data.',
+      },
     },
     required: ['session'],
   },
@@ -31,10 +36,11 @@ export interface ScreenshotParams {
   session: string;
   selector?: string;
   fullPage?: boolean;
+  savePath?: string;
 }
 
 export async function handler(params: ScreenshotParams) {
-  const { session: sessionId, selector, fullPage = false } = params;
+  const { session: sessionId, selector, fullPage = false, savePath } = params;
 
   const session = getSession(sessionId);
   if (!session) {
@@ -57,6 +63,16 @@ export async function handler(params: ScreenshotParams) {
         type: 'png',
         fullPage,
       });
+    }
+
+    // If savePath provided, write to disk and return path
+    if (savePath) {
+      writeFileSync(savePath, buffer);
+      return {
+        success: true,
+        savedTo: savePath,
+        size: buffer.length,
+      };
     }
 
     // Return special format for MCP image content block
