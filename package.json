@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "prepare": "npm run build",
     "dev": "tsc --watch",
     "start": "node dist/cli.js",
     "test": "npx tsx test/integration.test.ts"
