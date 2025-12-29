@@ -19,7 +19,8 @@ Available actions:
 - check: Check a checkbox (requires: selector)
 - uncheck: Uncheck a checkbox (requires: selector)
 - press: Press a key (requires: selector or value for key name)
-- scroll: Scroll the page or element (optional: selector, value for direction)`,
+- scroll: Scroll the page or element (optional: selector, value for direction)
+- highlight: Scroll to element and flash it with a colored border (requires: selector)`,
   inputSchema: {
     type: 'object',
     properties: {
@@ -29,7 +30,7 @@ Available actions:
       },
       type: {
         type: 'string',
-        enum: ['navigate', 'back', 'forward', 'click', 'fill', 'select', 'check', 'uncheck', 'press', 'scroll'],
+        enum: ['navigate', 'back', 'forward', 'click', 'fill', 'select', 'check', 'uncheck', 'press', 'scroll', 'highlight'],
         description: 'The action to perform',
       },
       selector: {

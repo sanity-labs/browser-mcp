@@ -14,7 +14,8 @@ export type ActionType =
   | 'check'
   | 'uncheck'
   | 'press'
-  | 'scroll';
+  | 'scroll'
+  | 'highlight';
 
 export interface ActionParams {
   type: ActionType;
@@ -140,6 +141,46 @@ export async function performAction(page: Page, params: ActionParams): Promise<A
         }, direction);
       }
       result.direction = direction;
+      break;
+    }
+
+    case 'highlight': {
+      if (!selector) {
+        throw new Error('highlight requires selector parameter');
+      }
+      // Scroll element into view and flash it with a colored border
+      await page.evaluate(async (sel: string) => {
+        const el = document.querySelector(sel);
+        if (!el) {
+          throw new Error(`Element not found: ${sel}`);
+        }
+
+        // Scroll into view
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Store original styles
+        const htmlEl = el as HTMLElement;
+        const originalOutline = htmlEl.style.outline;
+        const originalTransition = htmlEl.style.transition;
+
+        // Apply highlight
+        htmlEl.style.transition = 'outline 0.15s ease-in-out';
+        htmlEl.style.outline = '3px solid #ff6b00';
+
+        // Flash 3 times
+        for (let i = 0; i < 3; i++) {
+          await new Promise(r => setTimeout(r, 200));
+          htmlEl.style.outline = 'none';
+          await new Promise(r => setTimeout(r, 200));
+          htmlEl.style.outline = '3px solid #ff6b00';
+        }
+
+        // Wait a moment then restore
+        await new Promise(r => setTimeout(r, 300));
+        htmlEl.style.outline = originalOutline;
+        htmlEl.style.transition = originalTransition;
+      }, selector);
+      result.selector = selector;
       break;
     }
 
