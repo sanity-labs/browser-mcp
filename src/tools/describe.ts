@@ -12,7 +12,10 @@ export const schema = {
   name: 'describe',
   description: `Use vision AI to describe what's visible on the page. Takes a screenshot and returns a text description.
 
-Requires OPENAI_API_KEY or ANTHROPIC_API_KEY environment variable to be set.
+Configuration (optional - tool works without, but returns error if no key set):
+- Set OPENAI_API_KEY to use OpenAI (gpt-4o) - preferred if both are set
+- Set ANTHROPIC_API_KEY to use Anthropic (claude-sonnet-4)
+- If neither is configured, returns a graceful error message
 
 Use cases:
 - Understand page layout and content without raw HTML
