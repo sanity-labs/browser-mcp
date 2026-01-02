@@ -15,7 +15,7 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
   "mcpServers": {
     "browser": {
       "command": "npx",
-      "args": ["github:simen/browser"]
+      "args": ["github:sanity-io/browser-mcp"]
     }
   }
 }
@@ -28,7 +28,7 @@ Restart Claude Desktop. The browsing tools will appear automatically.
 Add to your project's `.claude/config.json` or run:
 
 ```bash
-claude mcp add browser "npx github:simen/browser"
+claude mcp add browser "npx github:sanity-io/browser-mcp"
 ```
 
 ### Visible Browser (Debug Mode)
@@ -40,7 +40,7 @@ To see what the agent is doing, run with a visible browser window:
   "mcpServers": {
     "browser": {
       "command": "npx",
-      "args": ["github:simen/browser", "--no-headless"]
+      "args": ["github:sanity-io/browser-mcp", "--no-headless"]
     }
   }
 }
@@ -171,8 +171,8 @@ Options:
 
 ```bash
 # Clone and install
-git clone https://github.com/simen/browser.git
-cd browser
+git clone https://github.com/sanity-io/browser-mcp.git
+cd browser-mcp
 npm install
 
 # Build
