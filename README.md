@@ -50,7 +50,7 @@ The browser will open visibly so you can watch the agent navigate.
 
 ### Optional: Vision Support
 
-Add an API key for the `describe` tool (AI-powered page descriptions):
+**No API key is required for basic browser automation.** All tools work without configuration. The API key only enables the `describe` tool for AI-powered page descriptions:
 
 ```json
 {
