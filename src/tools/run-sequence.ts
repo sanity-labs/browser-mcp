@@ -130,7 +130,7 @@ Returns a chronological event log of everything that happened - actions, asserti
 Step types:
 - action: Browser actions (navigate, click, fill, select, check, uncheck, press, scroll, highlight)
 - assert: Conditions that fail the sequence if not met (url_contains, element_exists, etc.)
-- query: Capture page state mid-sequence (overview, screenshot)
+- query: Capture page state mid-sequence (overview, screenshot, describe)
 
 Assertion conditions:
 - url_contains, url_equals: Check current URL
@@ -173,8 +173,8 @@ Stops on first assertion failure or action error.`,
             },
             query: {
               type: 'string',
-              enum: ['overview', 'screenshot'],
-              description: 'Query type (for query steps)',
+              enum: ['overview', 'screenshot', 'describe'],
+              description: 'Query type (for query steps): overview for page summary, screenshot for image capture, describe for vision AI analysis',
             },
             selector: { type: 'string' },
             value: { type: 'string' },
