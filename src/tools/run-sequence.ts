@@ -13,6 +13,7 @@ import { getSession, listSessions, Session } from '../session.js';
 import { performAction, ActionType } from '../browser/actions.js';
 import { checkAssertion, AssertCondition, describeCondition } from '../browser/assertions.js';
 import { getOverview } from '../browser/accessibility.js';
+import { describeImage, isConfigured as isVisionConfigured } from '../vision/index.js';
 
 // Ensure screenshots directory exists
 const screenshotsDir = join(tmpdir(), 'browser-screenshots');
@@ -38,10 +39,11 @@ export interface AssertStep {
 
 export interface QueryStep {
   type: 'query';
-  query: 'overview' | 'screenshot';
+  query: 'overview' | 'screenshot' | 'describe';
   params?: {
     selector?: string;
     fullPage?: boolean;
+    prompt?: string;  // For describe query
   };
 }
 
@@ -528,6 +530,44 @@ async function executeQuery(page: Page, step: QueryStep): Promise<StepExecutionR
       return {
         success: true,
         data: { path: filename, size: buffer.length },
+      };
+    }
+
+    case 'describe': {
+      if (!isVisionConfigured()) {
+        return {
+          success: false,
+          error: 'Vision not configured. Set OPENAI_API_KEY or ANTHROPIC_API_KEY environment variable.'
+        };
+      }
+
+      const params = step.params || {};
+      let buffer: Buffer;
+
+      if (params.selector) {
+        const element = page.locator(params.selector);
+        const count = await element.count();
+        if (count === 0) {
+          return { success: false, error: `Element not found: ${params.selector}` };
+        }
+        buffer = await element.screenshot({ type: 'png' });
+      } else {
+        buffer = await page.screenshot({
+          type: 'png',
+          fullPage: params.fullPage || false,
+        });
+      }
+
+      const base64Image = buffer.toString('base64');
+      const result = await describeImage(base64Image, params.prompt);
+
+      if (!result.success) {
+        return { success: false, error: result.error };
+      }
+
+      return {
+        success: true,
+        data: { description: result.description, provider: result.provider },
       };
     }
 

@@ -24,6 +24,7 @@ import * as actionTool from './tools/action.js';
 import * as screenshotTool from './tools/screenshot.js';
 import * as diagnosticsTool from './tools/diagnostics.js';
 import * as runSequenceTool from './tools/run-sequence.js';
+import * as describeTool from './tools/describe.js';
 
 const tools = [
   openSessionTool,
@@ -36,6 +37,7 @@ const tools = [
   screenshotTool,
   diagnosticsTool,
   runSequenceTool,
+  describeTool,
 ];
 
 export function createServer(options: { headless?: boolean } = {}) {

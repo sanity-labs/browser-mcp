@@ -62,6 +62,7 @@ The browser will open visibly so you can watch the agent navigate.
 | `screenshot` | Capture page or element screenshots (saves to disk) |
 | `diagnostics` | Get console logs and network requests for debugging |
 | `run_sequence` | Execute a batch of browser operations and assertions in a single call |
+| `describe` | Use vision AI to describe what's visible on the page (requires API key) |
 
 ## Example Workflow
 
@@ -156,6 +157,58 @@ await mcp.call('run_sequence', {
 // → { success: true, completed: 4, total: 4, events: [...], final_state: {...} }
 ```
 
+## Describe Tool (Vision AI)
+
+Use vision AI to describe what's visible on the page. Takes a screenshot and sends it to OpenAI or Anthropic for analysis, returning a text description.
+
+**Requires** `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` environment variable.
+
+```json
+{
+  "mcpServers": {
+    "browser": {
+      "command": "npx",
+      "args": ["github:sanity-io/browser-mcp"],
+      "env": {
+        "OPENAI_API_KEY": "sk-..."
+      }
+    }
+  }
+}
+```
+
+```javascript
+// Describe the current viewport
+await mcp.call('describe', { session: 'main' });
+// → { description: "The page shows a login form with email and password fields...", provider: "openai" }
+
+// Describe a specific element
+await mcp.call('describe', { session: 'main', selector: '.error-message' });
+// → { description: "A red error banner displaying 'Invalid credentials'", provider: "openai" }
+
+// Ask a specific question
+await mcp.call('describe', {
+  session: 'main',
+  prompt: 'What navigation options are visible?'
+});
+// → { description: "The navigation bar shows: Home, Products, About, Contact...", provider: "openai" }
+```
+
+Also available as a query type in `run_sequence`:
+
+```javascript
+await mcp.call('run_sequence', {
+  session: 'main',
+  steps: [
+    { type: 'action', action: 'click', selector: '#submit' },
+    { type: 'query', query: 'describe', params: {
+      selector: '.result-panel',
+      prompt: 'Was the form submitted successfully?'
+    }}
+  ]
+});
+```
+
 ## CLI Options
 
 ```bash
@@ -196,6 +249,10 @@ src/
 │   ├── accessibility.ts  # DOM queries, element extraction
 │   ├── actions.ts        # Browser actions (including highlight)
 │   └── assertions.ts     # Assertion conditions for run_sequence
+├── vision/
+│   ├── index.ts          # Vision provider selection
+│   ├── openai.ts         # OpenAI vision wrapper
+│   └── anthropic.ts      # Anthropic vision wrapper
 └── tools/
     ├── open-session.ts   # open_session tool
     ├── close-session.ts  # close_session tool
@@ -206,7 +263,8 @@ src/
     ├── action.ts         # action tool
     ├── screenshot.ts     # screenshot tool
     ├── diagnostics.ts    # diagnostics tool
-    └── run-sequence.ts   # run_sequence tool
+    ├── run-sequence.ts   # run_sequence tool
+    └── describe.ts       # describe tool (vision AI)
 
 test/
 ├── fixtures/             # Test HTML pages
