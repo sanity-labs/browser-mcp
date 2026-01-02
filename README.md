@@ -48,6 +48,26 @@ To see what the agent is doing, run with a visible browser window:
 
 The browser will open visibly so you can watch the agent navigate.
 
+### Optional: Vision Support
+
+Add an API key for the `describe` tool (AI-powered page descriptions):
+
+```json
+{
+  "mcpServers": {
+    "browser": {
+      "command": "npx",
+      "args": ["github:sanity-io/browser-mcp"],
+      "env": {
+        "OPENAI_API_KEY": "sk-..."
+      }
+    }
+  }
+}
+```
+
+Supports `OPENAI_API_KEY` (gpt-4o) or `ANTHROPIC_API_KEY` (claude-sonnet-4). If both are set, OpenAI is preferred.
+
 ## Available Tools
 
 | Tool | Description |
