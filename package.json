@@ -1,11 +1,11 @@
 {
-  "name": "agentibility",
+  "name": "browser",
   "version": "0.1.0",
-  "description": "Accessibility for agents - MCP server for web browsing",
+  "description": "Browser MCP - Web browsing tools for AI agents",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "agentibility": "./dist/cli.js"
+    "browser": "./dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -16,7 +16,7 @@
   },
   "keywords": [
     "mcp",
-    "accessibility",
+    "browser",
     "agents",
     "playwright",
     "web-automation"

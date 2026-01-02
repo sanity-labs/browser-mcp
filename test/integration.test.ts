@@ -1,5 +1,5 @@
 /**
- * Integration tests for agentibility MCP server
+ * Integration tests for Browser MCP server
  *
  * Run with: npx tsx test/integration.test.ts
  */

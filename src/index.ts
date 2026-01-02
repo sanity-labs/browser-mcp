@@ -1,7 +1,7 @@
 /**
- * Agentibility - MCP Server for web browsing
+ * Browser MCP - Web browsing tools for AI agents
  *
- * Accessibility for agents. Browse the web using semantic accessibility patterns.
+ * Navigate and interact with web pages using semantic accessibility patterns.
  */
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
@@ -45,7 +45,7 @@ export function createServer(options: { headless?: boolean } = {}) {
 
   const server = new Server(
     {
-      name: 'agentibility',
+      name: 'browser',
       version: '0.1.0',
     },
     {

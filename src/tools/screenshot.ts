@@ -10,7 +10,7 @@ import { join } from 'path';
 import { getSession, listSessions } from '../session.js';
 
 // Ensure screenshots directory exists
-const screenshotsDir = join(tmpdir(), 'agentibility-screenshots');
+const screenshotsDir = join(tmpdir(), 'browser-screenshots');
 try {
   mkdirSync(screenshotsDir, { recursive: true });
 } catch {

@@ -1,8 +1,8 @@
-# Agentibility
+# Browser MCP
 
-Accessibility for agents. Browse the web using semantic accessibility patterns—no screenshots needed.
+Web browsing tools for AI agents. Navigate and interact with web pages using semantic accessibility patterns—no screenshots needed.
 
-Agentibility is an MCP server that lets AI agents navigate and interact with web pages using the same accessibility semantics that screen readers use. Instead of parsing raw HTML or analyzing screenshots, agents query landmarks, headings, forms, and other semantic elements.
+Browser MCP is an MCP server that lets AI agents navigate and interact with web pages using the same accessibility semantics that screen readers use. Instead of parsing raw HTML or analyzing screenshots, agents query landmarks, headings, forms, and other semantic elements.
 
 ## Installation
 
@@ -13,9 +13,9 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 ```json
 {
   "mcpServers": {
-    "agentibility": {
+    "browser": {
       "command": "npx",
-      "args": ["github:simen/agentibility"]
+      "args": ["github:simen/browser"]
     }
   }
 }
@@ -28,7 +28,7 @@ Restart Claude Desktop. The browsing tools will appear automatically.
 Add to your project's `.claude/config.json` or run:
 
 ```bash
-claude mcp add agentibility "npx github:simen/agentibility"
+claude mcp add browser "npx github:simen/browser"
 ```
 
 ### Visible Browser (Debug Mode)
@@ -38,9 +38,9 @@ To see what the agent is doing, run with a visible browser window:
 ```json
 {
   "mcpServers": {
-    "agentibility": {
+    "browser": {
       "command": "npx",
-      "args": ["github:simen/agentibility", "--no-headless"]
+      "args": ["github:simen/browser", "--no-headless"]
     }
   }
 }
@@ -61,6 +61,7 @@ The browser will open visibly so you can watch the agent navigate.
 | `action` | Interact: navigate, click, fill, select, check, press, scroll, back, forward, highlight |
 | `screenshot` | Capture page or element screenshots (saves to disk) |
 | `diagnostics` | Get console logs and network requests for debugging |
+| `run_sequence` | Execute a batch of browser operations and assertions in a single call |
 
 ## Example Workflow
 
@@ -91,7 +92,7 @@ Capture full page, viewport, or specific element screenshots. Screenshots save t
 ```javascript
 // Full viewport
 await mcp.call('screenshot', { session: 'main' });
-// → { success: true, path: '/tmp/agentibility-screenshots/screenshot-123.png', size: 150000 }
+// → { success: true, path: '/tmp/browser-screenshots/screenshot-123.png', size: 150000 }
 
 // Full scrollable page
 await mcp.call('screenshot', { session: 'main', fullPage: true });
@@ -138,10 +139,27 @@ Scroll to an element and flash it with a colored border—useful for showing use
 await mcp.call('action', { session: 'main', type: 'highlight', selector: '.article-title' });
 ```
 
+## Run Sequence Tool
+
+Execute a batch of browser operations and assertions in a single call. Useful for testing flows.
+
+```javascript
+await mcp.call('run_sequence', {
+  session: 'main',
+  steps: [
+    { type: 'action', action: 'fill', selector: '#search', value: 'test' },
+    { type: 'action', action: 'click', selector: '#submit' },
+    { type: 'assert', condition: { element_exists: '#results' } },
+    { type: 'assert', condition: { element_text_contains: { selector: '#results', text: 'test' } } }
+  ]
+});
+// → { success: true, completed: 4, total: 4, events: [...], final_state: {...} }
+```
+
 ## CLI Options
 
 ```bash
-npx agentibility [options]
+npx browser [options]
 
 Options:
   --headless=true   Run browser in headless mode (default)
@@ -153,8 +171,8 @@ Options:
 
 ```bash
 # Clone and install
-git clone https://github.com/simen/agentibility.git
-cd agentibility
+git clone https://github.com/simen/browser.git
+cd browser
 npm install
 
 # Build
@@ -176,7 +194,8 @@ src/
 ├── session.ts            # Playwright session management + diagnostics buffers
 ├── browser/
 │   ├── accessibility.ts  # DOM queries, element extraction
-│   └── actions.ts        # Browser actions (including highlight)
+│   ├── actions.ts        # Browser actions (including highlight)
+│   └── assertions.ts     # Assertion conditions for run_sequence
 └── tools/
     ├── open-session.ts   # open_session tool
     ├── close-session.ts  # close_session tool
@@ -186,7 +205,8 @@ src/
     ├── elements.ts       # elements tool
     ├── action.ts         # action tool
     ├── screenshot.ts     # screenshot tool
-    └── diagnostics.ts    # diagnostics tool
+    ├── diagnostics.ts    # diagnostics tool
+    └── run-sequence.ts   # run_sequence tool
 
 test/
 ├── fixtures/             # Test HTML pages

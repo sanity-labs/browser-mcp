@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Agentibility CLI
+ * Browser MCP CLI
  *
- * Usage: npx agentibility [--headless=false]
+ * Usage: npx browser [--headless=false]
  */
 
 import { startServer } from './index.js';
@@ -19,9 +19,9 @@ for (const arg of args) {
     headless = true;
   } else if (arg === '--help' || arg === '-h') {
     console.log(`
-Agentibility - Accessibility for agents
+Browser MCP - Web browsing tools for AI agents
 
-Usage: npx agentibility [options]
+Usage: npx browser [options]
 
 Options:
   --headless=true   Run browser in headless mode (default)
