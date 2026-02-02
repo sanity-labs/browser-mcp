@@ -1,11 +1,25 @@
 {
-  "name": "browser",
+  "name": "@sanity-labs/browser-mcp",
   "version": "0.1.0",
   "description": "Browser MCP - Web browsing tools for AI agents",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "browser": "./dist/cli.js"
+    "browser-mcp": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanity-labs/browser-mcp.git"
+  },
+  "homepage": "https://github.com/sanity-labs/browser-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/sanity-labs/browser-mcp/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsc",
@@ -21,7 +35,7 @@
     "playwright",
     "web-automation"
   ],
-  "author": "",
+  "author": "Sanity.io <hello@sanity.io>",
   "license": "MIT",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",

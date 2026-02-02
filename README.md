@@ -15,7 +15,7 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
   "mcpServers": {
     "browser": {
       "command": "npx",
-      "args": ["github:sanity-io/browser-mcp"]
+      "args": ["@sanity-labs/browser-mcp"]
     }
   }
 }
@@ -28,7 +28,7 @@ Restart Claude Desktop. The browsing tools will appear automatically.
 Add to your project's `.claude/config.json` or run:
 
 ```bash
-claude mcp add browser "npx github:sanity-io/browser-mcp"
+claude mcp add browser "npx @sanity-labs/browser-mcp"
 ```
 
 ### Visible Browser (Debug Mode)
@@ -40,7 +40,7 @@ To see what the agent is doing, run with a visible browser window:
   "mcpServers": {
     "browser": {
       "command": "npx",
-      "args": ["github:sanity-io/browser-mcp", "--no-headless"]
+      "args": ["@sanity-labs/browser-mcp", "--no-headless"]
     }
   }
 }
@@ -57,7 +57,7 @@ The browser will open visibly so you can watch the agent navigate.
   "mcpServers": {
     "browser": {
       "command": "npx",
-      "args": ["github:sanity-io/browser-mcp"],
+      "args": ["@sanity-labs/browser-mcp"],
       "env": {
         "OPENAI_API_KEY": "sk-..."
       }
@@ -188,7 +188,7 @@ Use vision AI to describe what's visible on the page. Takes a screenshot and sen
   "mcpServers": {
     "browser": {
       "command": "npx",
-      "args": ["github:sanity-io/browser-mcp"],
+      "args": ["@sanity-labs/browser-mcp"],
       "env": {
         "OPENAI_API_KEY": "sk-..."
       }
@@ -232,7 +232,7 @@ await mcp.call('run_sequence', {
 ## CLI Options
 
 ```bash
-npx browser [options]
+npx @sanity-labs/browser-mcp [options]
 
 Options:
   --headless=true   Run browser in headless mode (default)
@@ -244,7 +244,7 @@ Options:
 
 ```bash
 # Clone and install
-git clone https://github.com/sanity-io/browser-mcp.git
+git clone https://github.com/sanity-labs/browser-mcp.git
 cd browser-mcp
 npm install
 
